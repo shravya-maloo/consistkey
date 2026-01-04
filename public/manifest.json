@@ -1,0 +1,16 @@
+{
+  "name": "ConsistKey",
+  "short_name": "ConsistKey",
+  "description": "Your personal habit tracker - Consistency is key",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#F5F1E8",
+  "theme_color": "#5D4E37",
+  "icons": [
+    {
+      "src": "consistkeylogo.png",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}
