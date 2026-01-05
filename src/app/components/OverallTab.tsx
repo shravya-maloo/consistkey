@@ -8,8 +8,12 @@ interface OverallTabProps {
 }
 
 function toLocalDate(d: Date | string) {
-  const dt = typeof d === 'string' ? new Date(d) : d;
-  return new Date(dt.getFullYear(), dt.getMonth(), dt.getDate());
+  if (typeof d === 'string') {
+    // Parse YYYY-MM-DD string as local date to avoid timezone issues
+    const [year, month, day] = d.split('-').map(Number);
+    return new Date(year, month - 1, day);
+  }
+  return new Date(d.getFullYear(), d.getMonth(), d.getDate());
 }
 
 function formatDateLocal(d: Date) {

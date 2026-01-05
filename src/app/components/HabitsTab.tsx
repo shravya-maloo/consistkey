@@ -9,8 +9,12 @@ interface HabitsTabProps {
 }
 
 function toLocalDate(d: Date | string) {
-  const dt = typeof d === 'string' ? new Date(d) : d;
-  return new Date(dt.getFullYear(), dt.getMonth(), dt.getDate());
+  if (typeof d === 'string') {
+    // Parse YYYY-MM-DD string as local date to avoid timezone issues
+    const [year, month, day] = d.split('-').map(Number);
+    return new Date(year, month - 1, day);
+  }
+  return new Date(d.getFullYear(), d.getMonth(), d.getDate());
 }
 
 function formatDateLocal(d: Date) {
@@ -27,6 +31,13 @@ function daysBetween(a: Date | string, b: Date | string) {
   return Math.floor((bb.getTime() - aa.getTime()) / dayMs);
 }
 
+// Helper to format a YYYY-MM-DD date string for display without timezone issues
+function formatDateForDisplay(dateString: string) {
+  const [year, month, day] = dateString.split('-').map(Number);
+  const date = new Date(year, month - 1, day); // month is 0-indexed
+  return date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+}
+
 export function HabitsTab({ habits, setHabits }: HabitsTabProps) {
   const [selectedHabit, setSelectedHabit] = useState<string | null>(null);
   const [isAddingHabit, setIsAddingHabit] = useState(false);
@@ -40,12 +51,19 @@ export function HabitsTab({ habits, setHabits }: HabitsTabProps) {
   const handleAddHabit = () => {
     if (!formData.name.trim()) return;
 
+    // Get today's date in local timezone without timezone conversion issues
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, '0');
+    const day = String(now.getDate()).padStart(2, '0');
+    const todayDateString = `${year}-${month}-${day}`;
+
     const newHabit: Habit = {
       id: Date.now().toString(),
       name: formData.name,
       description: formData.description,
       frequency: formData.frequency,
-      startDate: formatDateLocal(toLocalDate(new Date())),
+      startDate: todayDateString,
       completions: {},
     };
 
@@ -165,7 +183,7 @@ export function HabitsTab({ habits, setHabits }: HabitsTabProps) {
 
           <div>
             <label className="block text-[#8B7355] mb-1">Started On</label>
-            <p className="text-[#5D4E37] text-sm sm:text-base">{new Date(habit.startDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
+            <p className="text-[#5D4E37] text-sm sm:text-base">{formatDateForDisplay(habit.startDate)}</p>
           </div>
 
           <div>
@@ -223,14 +241,28 @@ export function HabitsTab({ habits, setHabits }: HabitsTabProps) {
 
 function HabitProgressChart({ habit }: { habit: Habit }) {
   const today = toLocalDate(new Date());
+  const habitStartLocal = toLocalDate(habit.startDate);
   const data: { week: string; completion: number }[] = [];
 
-  for (let i = 11; i >= 0; i--) {
-    const weekStart = new Date(today);
-    weekStart.setDate(today.getDate() - i * 7);
-    weekStart.setDate(weekStart.getDate() - weekStart.getDay()); // Sunday local
+  // Calculate the number of weeks since habit started
+  const daysSinceStart = daysBetween(habitStartLocal, today);
+  const weeksSinceStart = Math.ceil(daysSinceStart / 7);
+  
+  // Show at least 1 week, max 12 weeks
+  const weeksToShow = Math.min(Math.max(weeksSinceStart, 1), 12);
+
+  // Find the start of the first week (Sunday) that includes the habit start date
+  const firstWeekStart = new Date(habitStartLocal);
+  firstWeekStart.setDate(habitStartLocal.getDate() - habitStartLocal.getDay()); // Move to Sunday
+
+  for (let i = 0; i < weeksToShow; i++) {
+    const weekStart = new Date(firstWeekStart);
+    weekStart.setDate(firstWeekStart.getDate() + i * 7);
     const weekEnd = new Date(weekStart);
     weekEnd.setDate(weekStart.getDate() + 6);
+
+    // Don't process weeks that are in the future
+    if (toLocalDate(weekStart) > today) break;
 
     let completedDays = 0;
     let expectedDays = 0;
@@ -239,8 +271,7 @@ function HabitProgressChart({ habit }: { habit: Habit }) {
       const dateLocal = toLocalDate(d);
       const dateKey = formatDateLocal(dateLocal);
 
-      const habitStartLocal = toLocalDate(habit.startDate);
-
+      // Only count days from habit start to today
       if (dateLocal >= habitStartLocal && dateLocal <= today) {
         if (shouldCountDay(habit, dateLocal)) {
           expectedDays++;
@@ -250,7 +281,7 @@ function HabitProgressChart({ habit }: { habit: Habit }) {
     }
 
     const completionRate = expectedDays > 0 ? Math.round((completedDays / expectedDays) * 100) : 0;
-    data.push({ week: `Week ${12 - i}`, completion: completionRate });
+    data.push({ week: `Week ${i + 1}`, completion: completionRate });
   }
 
   return (
