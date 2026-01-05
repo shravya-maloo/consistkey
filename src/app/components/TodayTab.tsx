@@ -118,14 +118,14 @@ export function TodayTab({ habits, setHabits }: TodayTabProps) {
   };
 
   return (
-    <div className="bg-[#FFFBF5] rounded-lg shadow-md border border-[#E8DCC8] p-6">
+    <div className="bg-[#FFFBF5] rounded-lg shadow-md border border-[#E8DCC8] p-4 sm:p-6">
       {todaysHabits.length === 0 ? (
         <p className="text-[#8B7355] text-center py-8">No habits for today!</p>
       ) : allDone ? (
         <div>
           <div className="flex flex-col items-center justify-center py-8 mb-6 bg-[#F5F1E8] rounded-lg">
             <Target className="w-12 h-12 text-[#5D4E37] mb-3" />
-            <p className="text-[#5D4E37] text-center">You are all done for today! Good job!</p>
+            <p className="text-[#5D4E37] text-center px-4">You are all done for today! Good job!</p>
           </div>
 
           {completedHabits.length > 0 && (
@@ -136,13 +136,13 @@ export function TodayTab({ habits, setHabits }: TodayTabProps) {
                   <div
                     key={habit.id}
                     onClick={() => toggleHabit(habit.id)}
-                    className="flex items-center gap-4 p-4 border border-[#E8DCC8] rounded-lg cursor-pointer hover:bg-[#F5F1E8] transition"
+                    className="flex items-center gap-3 sm:gap-4 p-3 sm:p-4 border border-[#E8DCC8] rounded-lg cursor-pointer hover:bg-[#F5F1E8] transition"
                   >
-                    <div className="w-6 h-6 rounded border-2 flex items-center justify-center bg-[#8B7355] border-[#8B7355]">
+                    <div className="w-6 h-6 rounded border-2 flex items-center justify-center bg-[#8B7355] border-[#8B7355] flex-shrink-0">
                       <Check className="w-4 h-4 text-white" />
                     </div>
-                    <div className="flex-1">
-                      <p className="line-through text-[#A89174]">{habit.name}</p>
+                    <div className="flex-1 min-w-0">
+                      <p className="line-through text-[#A89174] break-words">{habit.name}</p>
                       <p className={`text-sm ${getFrequencyColor(habit.frequency)}`}>{getFrequencyText(habit.frequency)}</p>
                     </div>
                   </div>
@@ -161,13 +161,13 @@ export function TodayTab({ habits, setHabits }: TodayTabProps) {
                   <div
                     key={habit.id}
                     onClick={() => toggleHabit(habit.id)}
-                    className="flex items-center gap-4 p-4 border border-[#E8DCC8] rounded-lg cursor-pointer hover:bg-[#F5F1E8] transition"
+                    className="flex items-center gap-3 sm:gap-4 p-3 sm:p-4 border border-[#E8DCC8] rounded-lg cursor-pointer hover:bg-[#F5F1E8] transition"
                   >
-                    <div className="w-6 h-6 rounded border-2 flex items-center justify-center border-[#8B7355]">
+                    <div className="w-6 h-6 rounded border-2 flex items-center justify-center border-[#8B7355] flex-shrink-0">
                       {habit.completions[todayKey] && <Check className="w-4 h-4 text-[#8B7355]" />}
                     </div>
-                    <div className="flex-1">
-                      <p className="text-[#5D4E37]">{habit.name}</p>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-[#5D4E37] break-words">{habit.name}</p>
                       <p className={`text-sm ${getFrequencyColor(habit.frequency)}`}>{getFrequencyText(habit.frequency)}</p>
                     </div>
                   </div>
@@ -184,13 +184,13 @@ export function TodayTab({ habits, setHabits }: TodayTabProps) {
                   <div
                     key={habit.id}
                     onClick={() => toggleHabit(habit.id)}
-                    className="flex items-center gap-4 p-4 border border-[#E8DCC8] rounded-lg cursor-pointer hover:bg-[#F5F1E8] transition"
+                    className="flex items-center gap-3 sm:gap-4 p-3 sm:p-4 border border-[#E8DCC8] rounded-lg cursor-pointer hover:bg-[#F5F1E8] transition"
                   >
-                    <div className="w-6 h-6 rounded border-2 flex items-center justify-center bg-[#8B7355] border-[#8B7355]">
+                    <div className="w-6 h-6 rounded border-2 flex items-center justify-center bg-[#8B7355] border-[#8B7355] flex-shrink-0">
                       <Check className="w-4 h-4 text-white" />
                     </div>
-                    <div className="flex-1">
-                      <p className="line-through text-[#A89174]">{habit.name}</p>
+                    <div className="flex-1 min-w-0">
+                      <p className="line-through text-[#A89174] break-words">{habit.name}</p>
                       <p className={`text-sm ${getFrequencyColor(habit.frequency)}`}>{getFrequencyText(habit.frequency)}</p>
                     </div>
                   </div>

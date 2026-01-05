@@ -91,7 +91,7 @@ export function HabitsTab({ habits, setHabits }: HabitsTabProps) {
 
   if (isAddingHabit || isEditingHabit) {
     return (
-      <div className="bg-[#FFFBF5] rounded-lg shadow-md border border-[#E8DCC8] p-6">
+      <div className="bg-[#FFFBF5] rounded-lg shadow-md border border-[#E8DCC8] p-4 sm:p-6">
         <div className="flex items-center gap-2 mb-6">
           <button
             onClick={() => {
@@ -139,7 +139,7 @@ export function HabitsTab({ habits, setHabits }: HabitsTabProps) {
     if (!habit) return null;
 
     return (
-      <div className="bg-[#FFFBF5] rounded-lg shadow-md border border-[#E8DCC8] p-6">
+      <div className="bg-[#FFFBF5] rounded-lg shadow-md border border-[#E8DCC8] p-4 sm:p-6">
         <div className="flex items-center gap-2 mb-6">
           <button onClick={() => setSelectedHabit(null)} className="p-2 hover:bg-[#F5F1E8] rounded">
             <ChevronLeft className="w-5 h-5 text-[#5D4E37]" />
@@ -150,12 +150,12 @@ export function HabitsTab({ habits, setHabits }: HabitsTabProps) {
         <div className="space-y-6">
           <div>
             <label className="block text-[#8B7355] mb-1">Name</label>
-            <p className="text-[#5D4E37]">{habit.name}</p>
+            <p className="text-[#5D4E37] break-words">{habit.name}</p>
           </div>
 
           <div>
             <label className="block text-[#8B7355] mb-1">Description</label>
-            <p className="text-[#5D4E37]">{habit.description || 'No description provided'}</p>
+            <p className="text-[#5D4E37] break-words">{habit.description || 'No description provided'}</p>
           </div>
 
           <div>
@@ -165,7 +165,7 @@ export function HabitsTab({ habits, setHabits }: HabitsTabProps) {
 
           <div>
             <label className="block text-[#8B7355] mb-1">Started On</label>
-            <p className="text-[#5D4E37]">{new Date(habit.startDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
+            <p className="text-[#5D4E37] text-sm sm:text-base">{new Date(habit.startDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
           </div>
 
           <div>
@@ -173,7 +173,7 @@ export function HabitsTab({ habits, setHabits }: HabitsTabProps) {
             <HabitProgressChart habit={habit} />
           </div>
 
-          <div className="flex gap-3 pt-4">
+          <div className="flex flex-col sm:flex-row gap-3 pt-4">
             <button onClick={() => startEdit(habit)} className="flex-1 py-3 bg-[#8B7355] text-white rounded hover:bg-[#5D4E37] flex items-center justify-center gap-2">
               <Edit2 className="w-4 h-4" />
               Edit
@@ -189,10 +189,10 @@ export function HabitsTab({ habits, setHabits }: HabitsTabProps) {
   }
 
   return (
-    <div className="bg-[#FFFBF5] rounded-lg shadow-md border border-[#E8DCC8] p-6">
-      <div className="flex justify-between items-center mb-6">
+    <div className="bg-[#FFFBF5] rounded-lg shadow-md border border-[#E8DCC8] p-4 sm:p-6">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-3">
         <h2 className="text-[#5D4E37]">Your Habits</h2>
-        <button onClick={() => setIsAddingHabit(true)} className="flex items-center gap-2 px-4 py-2 bg-[#8B7355] text-white rounded hover:bg-[#5D4E37]">
+        <button onClick={() => setIsAddingHabit(true)} className="flex items-center gap-2 px-4 py-2 bg-[#8B7355] text-white rounded hover:bg-[#5D4E37] w-full sm:w-auto justify-center">
           <Plus className="w-5 h-5" />
           Add Habit
         </button>
@@ -200,18 +200,18 @@ export function HabitsTab({ habits, setHabits }: HabitsTabProps) {
 
       {habits.length === 0 ? (
         <div className="text-center py-12">
-          <p className="text-[#8B7355] mb-4">No habits yet. Start by adding your first habit!</p>
+          <p className="text-[#8B7355] mb-4 px-4">No habits yet. Start by adding your first habit!</p>
         </div>
       ) : (
         <div className="space-y-3">
           {habits.map((habit) => (
-            <div key={habit.id} onClick={() => setSelectedHabit(habit.id)} className="p-4 border border-[#E8DCC8] rounded-lg cursor-pointer hover:bg-[#F5F1E8] transition">
-              <div className="flex justify-between items-center">
-                <div>
-                  <h4 className="text-[#5D4E37]">{habit.name}</h4>
+            <div key={habit.id} onClick={() => setSelectedHabit(habit.id)} className="p-3 sm:p-4 border border-[#E8DCC8] rounded-lg cursor-pointer hover:bg-[#F5F1E8] transition">
+              <div className="flex justify-between items-center gap-3">
+                <div className="flex-1 min-w-0">
+                  <h4 className="text-[#5D4E37] break-words">{habit.name}</h4>
                   <p className="text-sm text-[#8B7355] capitalize">{habit.frequency === 'alternate' ? 'alternate days' : habit.frequency}</p>
                 </div>
-                <ChevronLeft className="w-5 h-5 rotate-180 text-[#8B7355]" />
+                <ChevronLeft className="w-5 h-5 rotate-180 text-[#8B7355] flex-shrink-0" />
               </div>
             </div>
           ))}
