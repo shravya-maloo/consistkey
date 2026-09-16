@@ -36,6 +36,7 @@ consistkey/
 ├── package.json            # Dependencies and scripts
 ├── vite.config.ts          # Vite configuration
 └── README.md
+```
 
 ## Data model
 
@@ -49,3 +50,4 @@ Habit
 ├── streak
 ├── progress history
 └── habit settings
+```
