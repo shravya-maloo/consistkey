@@ -2,7 +2,7 @@
 
 ConsistKey is a habit-tracking app designed to help users build consistency through simple daily progress tracking. Create habits, monitor your streaks, and stay motivated as you work toward your goals.
 
-Access it here: YOUR-VERCEL-URL
+Access it here: https://consistkey.vercel.app/
 
 ## Features
 
