@@ -36,3 +36,16 @@ consistkey/
 ├── package.json            # Dependencies and scripts
 ├── vite.config.ts          # Vite configuration
 └── README.md
+
+## Data model
+
+Habit data is stored locally in the browser using `localStorage`.
+
+```text
+Habit
+├── id
+├── name
+├── completed
+├── streak
+├── progress history
+└── habit settings
